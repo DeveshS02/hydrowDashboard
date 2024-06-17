@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { parse, isBefore, format } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import { getAuth, signOut } from 'firebase/auth';
+// import { firebase } from 'firebase/app';
 import Navbar from "./Navbar";
 import IndexButton from "./IndexButton";
 import IndexPanel from "./IndexPanel";
@@ -28,6 +31,8 @@ const options = [
 const MainContent = () => {
 
   const { userData } = useAuth();
+  const navigate = useNavigate();
+  const auth = getAuth();
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +57,6 @@ const MainContent = () => {
   const fetchNodesData = useCallback(async () => {
     setLoading(true);
     try {
-        
       const [tankNodes, borewellNodes, waterNodes] = await Promise.all([
         fetch_data("https://backtest-ds7q.onrender.com/water/staticnodesC"),
         fetch_data("https://backtest-ds7q.onrender.com/water/borewellnodesC"),
@@ -247,6 +251,15 @@ const MainContent = () => {
   }, [nodes, data]);
 
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error.message);
+    }
+  };
+
   const renameKeys = (data) => {
     const keyMapping = {
       created_at: "Last_Updated",
@@ -331,6 +344,8 @@ const MainContent = () => {
           setNavClosing={setNavClosing}
           setNavOpening={setNavOpening}
           statusButtonRef={statusButtonRef}
+          userData = {userData}
+          handleLogout = {handleLogout}
         />
       
 
