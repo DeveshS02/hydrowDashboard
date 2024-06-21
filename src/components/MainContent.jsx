@@ -346,6 +346,7 @@ const MainContent = () => {
           statusButtonRef={statusButtonRef}
           userData = {userData}
           handleLogout = {handleLogout}
+          location={userData.location}
         />
       
 
@@ -358,6 +359,7 @@ const MainContent = () => {
         setNavClosing={setNavClosing}
         setNavOpening={setNavOpening}
         hoverData={hoverData}
+        location={userData.location}
       />
 
       <div className="fixed bottom-4 left-4 p-2 z-50">

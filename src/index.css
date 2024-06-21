@@ -807,7 +807,6 @@ color:#05337d;
 }
 
 .container button{
-  background-color: #3b9cb7;
   color: #fff;
   font-size: 12px;
   padding: 10px 45px;
@@ -910,6 +909,13 @@ color:#05337d;
   backdrop-filter: blur(10px);
 }
 
+.loginbtn{
+  background-color: white;
+  transition: all 0.2s linear;
+}
+.loginbtn:hover{
+  background-color: #388CA5;
+}
 /*profile css */
 
 

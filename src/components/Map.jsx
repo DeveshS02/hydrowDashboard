@@ -15,7 +15,7 @@ import icon_waternode_digital_inactive from '../images/not-sheni-new.png';
 import image2 from "../images/hydrowfinal.png";
 import {DateTime} from 'luxon'
 
-const MapComponent = ({ selectedOptions, nodes, data, bounds, loading, setNavClosing, setNavOpening, hoverData }) => {
+const MapComponent = ({ selectedOptions, nodes, data, bounds, loading, setNavClosing, setNavOpening, hoverData, location }) => {
   const [selectedNode, setSelectedNode] = useState({ data: null, type: null, attributes: [], isAnalog: false, name: null, analogOrDigital: null });
 
   const iconConfig = {
@@ -45,6 +45,8 @@ const MapComponent = ({ selectedOptions, nodes, data, bounds, loading, setNavClo
     const optionMap = { tank: 1, borewell: 5, water: node.parameters.includes('isanalog') ? 2 : 3 };
     return selectedOptions.includes(optionMap[type]);
   };
+
+  const convertMmToFeet = (mm) => (mm / 304.8).toFixed(2);
 
   const developWalls = () => (
     <Polyline positions={[[17.44431215246116, 78.34421333959695], [17.448959007851123, 78.3484512379919], [17.444986217014176, 78.35261351452294], [17.444150848626073, 78.35110228147538], [17.441949414491706, 78.34974490029627], [17.44431215246116, 78.34421333959695]]} color="black" weight={3} opacity={0.8}>
@@ -92,7 +94,7 @@ const MapComponent = ({ selectedOptions, nodes, data, bounds, loading, setNavClo
 
   const getUnit = (key) => {
     const unitMapping = {
-      "Water Level": "cm",
+      "Water Level": location === 'RN' ? 'ft' : 'cm',
       "Temperature": "°C",
       "Total Volume": "kL",
       "Flow Rate": "kL/hr",
@@ -118,7 +120,7 @@ const MapComponent = ({ selectedOptions, nodes, data, bounds, loading, setNavClo
             {data ? Object.entries(data).map(([key, value]) => (
               <div key={key} className="text-sm">
                 <span>{key}: </span>
-                <span>{value} {getUnit(key)}</span> {/* Add units */}
+                <span>{ (nodeType === 'borewell' && location === 'RN' && key ==='Water Level') ? convertMmToFeet(value) : value} {getUnit(key)}</span>
               </div>
             )) : (
               <span className="text-sm">No data available</span>
@@ -166,7 +168,8 @@ const MapComponent = ({ selectedOptions, nodes, data, bounds, loading, setNavClo
             nodeType={selectedNode.type} 
             analogOrDigital={selectedNode.analogOrDigital} 
             allData={data} 
-            nodeName={selectedNode.name} />
+            nodeName={selectedNode.name}
+            location= {location} />
         </Modal>
       )}
     </div>

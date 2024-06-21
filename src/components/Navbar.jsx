@@ -19,7 +19,8 @@ const Navbar = ({
   setNavClosing,
   statusButtonRef,
   userData,
-  handleLogout
+  handleLogout,
+  location
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);

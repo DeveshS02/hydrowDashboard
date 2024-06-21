@@ -20,7 +20,7 @@ const Dropdownprofile = ({userData, handleLogout}) => {
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      if (isOpen && !event.target.closest(".dropdown")) {
+      if (isOpen && !event.target.closest(".dropdownn")) {
         setIsOpen(false);
       }
     };
@@ -43,7 +43,7 @@ const Dropdownprofile = ({userData, handleLogout}) => {
       <button
         aria-expanded={isOpen}
         onClick={() => setIsOpen(!isOpen)}
-        className={`border-2 profile dropdown ${isOpen ? "flipped" : ""}`}
+        className={`border-2 profile dropdownn ${isOpen ? "flipped" : ""}`}
       >
         <img className="profileimage" src={userData.avatar} alt="Your profile" />
       </button>

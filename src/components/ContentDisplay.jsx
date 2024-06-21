@@ -11,8 +11,10 @@ const ContentDisplay = ({
   setSelectedDetail,
   setNavClosing,
   setNavOpening,
+  location
 }) => {
   const containerRef = useRef(null);
+
   const [allNodesData, setAllNodesData] = useState([]);
   useEffect(() => {
     const combinedData = [...WaterMeterData, ...tankData, ...borewellData];
@@ -28,6 +30,8 @@ const ContentDisplay = ({
       });
     }
   };
+
+  const convertMmToFeet = (mm) => (mm / 304.8).toFixed(2);
 
   useEffect(() => {
     const handleWheel = (event) => {
@@ -60,8 +64,8 @@ const ContentDisplay = ({
         : Object.keys(nodeData[0]).filter(
             (key) =>
               key !== "Last_Updated" &&
-              key !== "pressure" &&
-              key !== "pressurevoltage"
+              key !== "Pressure" &&
+              key !== "Pressure Voltage"
           );
 
       setSelectedDetail({
@@ -167,7 +171,7 @@ const ContentDisplay = ({
                   return <span className="value"> N/A </span>;
                 } else {
                   return <span className="value">
-                    {x} kL
+                    {x} m<sup>3</sup>
                   </span>;
                 }
               })()}
@@ -205,7 +209,7 @@ const ContentDisplay = ({
               if (x === "-") {
                 return <span className="value"> N/A </span>;
               } else {
-                return <span className="value">{x} cm</span>;
+                return <span className="value">{`${location === 'RN' ? convertMmToFeet(x) : x}  ${location === 'RN' ? 'ft' : 'cm'}`}</span>;
               }
             })()}
           </div>
@@ -246,6 +250,7 @@ const ContentDisplay = ({
   };
 
   const determineClassName = (item) => {
+    console.log(location)
     const v =
       item.props.children[item.props.children.length - 1].props.children[3]
         .props.children[1].props.children;
