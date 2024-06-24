@@ -3,11 +3,15 @@ import image4 from "../images/user.png";
 import image6 from "../images/question.png";
 import image7 from "../images/log-out.png";
 import ProfileCard from "./ProfileCard.jsx";
+import Helpcomp from "./HelpComponent.jsx";
 
-const Dropdownprofile = ({userData, handleLogout}) => {
+const DropdownProfile = ({ userData, handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const [showContainer, setShowContainer] = useState(false);
+  const [showContainer2, setShowContainer2] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const [closing2, setClosing2] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -34,8 +38,24 @@ const Dropdownprofile = ({userData, handleLogout}) => {
     setShowContainer(true);
   };
 
+  const handleButtonClick2 = () => {
+    setShowContainer2(true);
+  };
+
   const handleCloseButtonClick = () => {
-    setShowContainer(false);
+    setClosing(true);
+    setTimeout(() => {
+      setShowContainer(false);
+      setClosing(false);
+    }, 400);
+  };
+
+  const handleCloseButtonClick2 = () => {
+    setClosing2(true);
+    setTimeout(() => {
+      setShowContainer2(false);
+      setClosing2(false);
+    }, 400);
   };
 
   return (
@@ -45,7 +65,11 @@ const Dropdownprofile = ({userData, handleLogout}) => {
         onClick={() => setIsOpen(!isOpen)}
         className={`border-2 profile dropdownn ${isOpen ? "flipped" : ""}`}
       >
-        <img className="profileimage" src={userData.avatar} alt="Your profile" />
+        <img
+          className="profileimage"
+          src={userData.avatar}
+          alt="Your profile"
+        />
       </button>
       {shouldRender && (
         <div className="tooltipbox">
@@ -91,7 +115,10 @@ const Dropdownprofile = ({userData, handleLogout}) => {
               </button>
             </li>
             <li>
-              <button className="profilebtn flex ml-5 items-center">
+              <button
+                onClick={handleButtonClick2}
+                className="profilebtn flex ml-5 items-center"
+              >
                 <div className="flex min-w-[92%] gap-3">
                   <img
                     className="iconprofile"
@@ -117,7 +144,10 @@ const Dropdownprofile = ({userData, handleLogout}) => {
               </button>
             </li>
             <li>
-              <button className="profilebtn flex ml-5 items-center" onClick={handleLogout}>
+              <button
+                className="profilebtn flex ml-5 items-center"
+                onClick={handleLogout}
+              >
                 <div className="flex min-w-[92%] gap-3">
                   <img
                     className="iconprofile"
@@ -147,9 +177,17 @@ const Dropdownprofile = ({userData, handleLogout}) => {
           <div className="tooltip"></div>
         </div>
       )}
-      {showContainer && <ProfileCard onClose={handleCloseButtonClick}  userData= {userData}/>}
+      {showContainer && (
+        <ProfileCard
+          onClose={handleCloseButtonClick}
+          userData={userData}
+          closing={closing}
+        />
+      )}
+      {showContainer2 && (
+        <Helpcomp onClose={handleCloseButtonClick2} userDt={userData} closing2 = {closing2}/>
+      )}
     </div>
   );
 };
-
-export default Dropdownprofile;
+export default DropdownProfile;

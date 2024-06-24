@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-const ProfileCard = ({ onClose, userData }) => {
+const ProfileCard = ({ onClose, userData, closing }) => {
   const handleClose = () => {
     onClose();
   };
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        handleClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
   return (
-    <div className="fixed inset-0 z-50 flex justify-center items-center h-screen">
-      <div className="profilecard bg-white w-80 rounded-lg shadow-lg overflow-hidden">
+    <div
+      className={`fixed inset-0 z-50 flex justify-center items-center h-screen ${
+        closing ? "depixelated" : "pixelated"
+      }`}
+    >
+      <div className="profilecard bg-white max-w-fit min-w-[20%] rounded-lg shadow-lg overflow-hidden">
         <div>
           <div className="profilegradient p-5 relative">
             <div className="absolute top-2 left-3 text-white">
-              <button onClick={handleClose}>
+              <button className="profileclosebtn" onClick={handleClose}>
                 <svg
                   width="64px"
                   height="64px"
@@ -152,5 +169,4 @@ const ProfileCard = ({ onClose, userData }) => {
     </div>
   );
 };
-
 export default ProfileCard;
